@@ -1,15 +1,28 @@
 import { connectDB } from "@/db";
-import TransactionModel from "@/models/Transaction";
+import TransactionModel, { ITransaction } from "@/models/Transaction";
 import ProductModel from "@/models/Product";
 import Link from "next/link";
 import { deleteTransaction } from "@/app/actions";
 import { Product, Transaction } from "@/types";
+import { Types } from "mongoose";
 
-function getProductNames(products): string {
+type ActualTransactionProduct = {
+  productName: any;
+  productId: Types.ObjectId;
+  quantity: number;
+};
+type ActualTransaction = {
+  products: ActualTransactionProduct[];
+  totalPrice: number;
+  createdDate: Date;
+  id?: string | undefined;
+};
+
+function getProductNames(products: ActualTransactionProduct[]): string {
   const productNames = products.map((transaction) => transaction.productName);
   return productNames.join(", ");
 }
-export const getAllTransactions = async (
+const getAllTransactions = async (
   page = 1,
   limit = 10
 ): Promise<Transaction[]> => {
@@ -23,7 +36,9 @@ export const getAllTransactions = async (
       .exec();
 
     const plainTransactions = transactions.map(
-      (transaction: Transaction & Document) => transaction.toJSON()
+      (transaction: Transaction & ITransaction) => {
+        return { ...transaction.toJSON(), id: transaction._id };
+      }
     );
 
     return plainTransactions;
@@ -43,16 +58,22 @@ export default async function TransactionsPage({ searchParams }: Props) {
 
   const transactions = await getAllTransactions(page, limit);
 
+  type TransactionProduct = {
+    productId: Types.ObjectId;
+    quantity: number;
+  };
   // Fetch product information for each transaction
   const transactionsWithProducts = await Promise.all(
     transactions.map(async (transaction) => {
-      const products = transaction.products.map(async (product: Product) => {
-        const foundProduct = await ProductModel.findById(product.productId);
-        return {
-          ...product,
-          productName: foundProduct ? foundProduct.name : "Unknown",
-        };
-      });
+      const products = transaction.products.map(
+        async (product: TransactionProduct) => {
+          const foundProduct = await ProductModel.findById(product.productId);
+          return {
+            ...product,
+            productName: foundProduct ? foundProduct.name : "Unknown",
+          };
+        }
+      );
 
       const updatedTransaction = {
         ...transaction,
@@ -76,7 +97,7 @@ export default async function TransactionsPage({ searchParams }: Props) {
 
         {/* Transaction List */}
         <div>
-          {transactionsWithProducts.map((transaction) => {
+          {transactionsWithProducts.map((transaction: ActualTransaction) => {
             console.log({ clientTrans: transaction.products });
             const beautifiedDate = transaction.createdDate.toLocaleString(
               "en-US",

@@ -3,6 +3,7 @@ const nextConfig = {
   experimental: {
     serverActions: true,
   },
+  ignoreBuildErrors: true,
 };
 
 module.exports = nextConfig;

@@ -5,10 +5,9 @@ import { connectDB } from "@/db";
 import { deleteProduct } from "@/app/actions";
 import { Product } from "@/types";
 import ProductQuantity from "./ProductQuantity";
+import { notFound } from "next/navigation";
 
-export const getProductById = async (
-  id: string
-): Promise<Product | undefined> => {
+const getProductById = async (id: string): Promise<Product | undefined> => {
   await connectDB();
 
   let data = null;
@@ -34,6 +33,10 @@ type Props = {
 export default async function Product({ params }: Props) {
   const productId = params?.id;
   const product = await getProductById(productId);
+
+  if (!product) {
+    notFound();
+  }
 
   return (
     <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-start">

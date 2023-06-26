@@ -3,7 +3,7 @@ import { connectDB } from "@/db";
 import ProductModel from "@/models/Product";
 import { Product } from "@/types";
 
-export const getProducts = async (): Promise<Product[]> => {
+const getProducts = async (): Promise<Product[]> => {
   await connectDB();
 
   try {

@@ -7,8 +7,8 @@ type Props = {
   products: Product[];
 };
 
-function reduceCategories(products) {
-  const categories = [];
+function reduceCategories(products: Product[]): string[] {
+  const categories: string[] = [];
 
   products.forEach((product) => {
     if (!categories.includes(product.category)) {
@@ -53,7 +53,7 @@ export default function TransactionForm({ products }: Props) {
     setQuantity(quantity + 1);
     setSelectedProduct((prevProduct) => {
       if (prevProduct) {
-        return { ...prevProduct, quantity: prevProduct.quantity + 1 };
+        return { ...prevProduct, quantity: Number(prevProduct.quantity) + 1 };
       }
       return null;
     });
@@ -64,7 +64,10 @@ export default function TransactionForm({ products }: Props) {
       setQuantity(quantity - 1);
       setSelectedProduct((prevProduct) => {
         if (prevProduct) {
-          return { ...prevProduct, quantity: prevProduct.quantity - 1 };
+          return {
+            ...prevProduct,
+            quantity: String(Number(prevProduct.quantity) - 1),
+          };
         }
         return null;
       });
@@ -72,17 +75,37 @@ export default function TransactionForm({ products }: Props) {
   };
 
   const handleAddProduct = () => {
-    if (quantity > 0) {
+    if (quantity > 0 && selectedProduct) {
       const existingProductIndex = addedProducts.findIndex(
         (product) => product._id === selectedProduct?._id
       );
 
       if (existingProductIndex !== -1) {
         const updatedProducts = [...addedProducts];
-        updatedProducts[existingProductIndex].quantity += quantity;
+        const existingQuantity = Number(
+          updatedProducts[existingProductIndex].quantity
+        );
+
+        if (!isNaN(existingQuantity)) {
+          updatedProducts[existingProductIndex].quantity =
+            existingQuantity + quantity;
+        } else {
+          updatedProducts[existingProductIndex].quantity = quantity;
+        }
+
         setAddedProducts(updatedProducts);
       } else {
-        const addedProduct = { ...selectedProduct, quantity };
+        // ensure we only take the fields that are part of the Product type
+        const { _id, name, price, image, category } = selectedProduct;
+        const addedProduct = {
+          _id,
+          name,
+          price,
+          image,
+          category,
+          quantity: Number(quantity),
+        };
+
         setAddedProducts([...addedProducts, addedProduct]);
       }
 
@@ -137,7 +160,8 @@ export default function TransactionForm({ products }: Props) {
 
   // Calculate the total price
   const totalPrice = addedProducts.reduce(
-    (total, product) => total + product.price * product.quantity,
+    (total, product) =>
+      total + Number(product.price) * Number(product.quantity),
     0
   );
 
@@ -208,7 +232,7 @@ export default function TransactionForm({ products }: Props) {
             <div className="flex items-center">
               <h3>Total Price:</h3>
               <p className="text-lg font-bold ml-2">
-                {selectedProduct.price * quantity} EUR
+                {Number(selectedProduct.price) * quantity} EUR
               </p>
             </div>
           </div>
@@ -251,7 +275,9 @@ export default function TransactionForm({ products }: Props) {
             <div key={product._id} className="flex items-center mb-2">
               <p className="mr-4">{product.name}</p>
               <p className="mr-4">Quantity: {product.quantity}</p>
-              <p>Price: {product.price * product.quantity} EUR</p>
+              <p>
+                Price: {Number(product.price) * Number(product.quantity)} EUR
+              </p>
               <button
                 className="ml-4 text-red-500 hover:text-red-700"
                 onClick={() => handleDeleteProduct(product._id)}

@@ -1,5 +1,4 @@
 import { passwordChecker } from "../actions";
-import LandingPage from "./LandingPage";
 
 export default async function CreateProduct() {
   return (

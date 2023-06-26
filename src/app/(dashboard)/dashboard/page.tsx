@@ -4,7 +4,7 @@ import ProductModel from "@/models/Product";
 import Link from "next/link";
 import { Transaction } from "@/types";
 
-export const getTotalTransactions = async () => {
+const getTotalTransactions = async () => {
   await connectDB();
 
   try {
@@ -16,7 +16,7 @@ export const getTotalTransactions = async () => {
   }
 };
 
-export const getTotalProducts = async () => {
+const getTotalProducts = async () => {
   await connectDB();
 
   try {
@@ -28,7 +28,7 @@ export const getTotalProducts = async () => {
   }
 };
 
-export const getTotalRevenue = async (): Promise<number> => {
+const getTotalRevenue = async (): Promise<number> => {
   await connectDB();
 
   try {

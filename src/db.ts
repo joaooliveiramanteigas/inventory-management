@@ -11,15 +11,16 @@ export async function connectDB() {
 
   try {
     // Connect to the MongoDB database
-    await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(uri);
 
     isConnected = true;
     console.log("Connected to the database");
-  } catch (error) {
-    console.error("Error connecting to the database:", error.message);
+  } catch (error: unknown) {
+    if (typeof error === "object" && error !== null && "message" in error) {
+      console.error("Error connecting to the database:", error.message);
+    } else {
+      console.error("Error connecting to the database:", error);
+    }
   }
 }
 

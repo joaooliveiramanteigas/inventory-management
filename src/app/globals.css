@@ -59,8 +59,4 @@
   font-weight: bold;
 }
 
-@media (max-width: 768px) {
-  .w-3/4 {
-    width: 75%;
-  }
-}
+

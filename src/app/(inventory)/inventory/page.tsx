@@ -2,7 +2,7 @@ import { connectDB } from "@/db";
 import ProductModel from "@/models/Product";
 import Link from "next/link";
 
-export const getAllProducts = async (page = 1, limit = 10) => {
+const getAllProducts = async (page = 1, limit = 10) => {
   await connectDB();
 
   try {
@@ -36,7 +36,9 @@ export default async function ProductsPage({ searchParams }: Props) {
     <div className="flex flex-col md:flex-row">
       {/* Main Content */}
       <div className="w-full p-8 md:w-3/4 ">
-        <h1 className="text-2xl font-bold mb-4 text-center md:text-left">Products</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center md:text-left">
+          Products
+        </h1>
 
         {/* Product List */}
         <div>

@@ -3,6 +3,11 @@ import mongoose, { Document, Schema } from "mongoose";
 
 delete mongoose.models.Transaction;
 
+export interface ITransaction extends Document {
+  toJSON(): any;
+  // Add other fields as needed
+}
+
 const transactionSchema = new Schema<Transaction>({
   products: [
     {
