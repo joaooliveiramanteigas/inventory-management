@@ -3,7 +3,7 @@ import TransactionModel from "@/models/Transaction";
 import ProductModel from "@/models/Product";
 import Link from "next/link";
 import { Transaction } from "@/types";
-import { headers } from "next/headers";
+// import { headers } from "next/headers";
 
 const getTotalTransactions = async () => {
   await connectDB();
@@ -46,13 +46,19 @@ const getTotalRevenue = async (): Promise<number> => {
   }
 };
 
-export default async function DashboardPage() {
+// export const dynamic = 'force-dynamic'
+// export const revalidate = 0;
+
+type Props = {
+  searchParams: {};
+};
+
+export default async function DashboardPage({ searchParams }: Props) {
   const totalTransactions = await getTotalTransactions();
   const totalProducts = await getTotalProducts();
   const totalRevenue = await getTotalRevenue();
 
-  // Force dynamic segment
-  headers();
+  // headers();
 
   return (
     <div className="flex flex-col">
