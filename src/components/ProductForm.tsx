@@ -8,7 +8,7 @@ const ProductForm = () => {
   const { pending } = useFormStatus();
 
   return (
-    <div className="w-3/4 p-8">
+    <div className="p-8">
       <h1 className="text-2xl font-bold mb-4">Add a Product</h1>
 
       <form action={createProduct} className="flex flex-col space-y-4">
@@ -16,14 +16,14 @@ const ProductForm = () => {
           type="text"
           name="name"
           placeholder="Product Name"
-          className="border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
+          className="border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500 w-full"
           required
         />
 
         <input
           type="text"
           placeholder="Price"
-          className="border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
+          className="border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500 w-full"
           required
           name="price"
         />
@@ -32,13 +32,13 @@ const ProductForm = () => {
           type="text"
           name="image"
           placeholder="Image URL"
-          className="border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
+          className="border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500 w-full"
         />
 
         <input
           type="text"
           placeholder="Category"
-          className="border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500"
+          className="border border-gray-300 px-4 py-2 rounded focus:outline-none focus:border-blue-500 w-full"
           required
           name="category"
         />

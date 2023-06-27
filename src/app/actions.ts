@@ -63,37 +63,9 @@ export async function updateProductQuantity(
   await ProductModel.findByIdAndUpdate(productId, { quantity: quantity });
 
   revalidatePath("/inventory");
-  revalidatePath(`/product/${productId}`);
+  revalidatePath("/product/[id]");
   return redirect("/inventory");
 }
-
-export const createTransaction = async (formData: FormData): Promise<void> => {
-  const productId = formData.get("productId");
-  const quantity = formData.get("quantity");
-
-  const product = await ProductModel.findById(productId);
-
-  if (!product) {
-    // Handle product not found
-    return;
-  }
-
-  const transaction = new TransactionModel({
-    productId,
-    quantity,
-    // Add other relevant transaction details
-  });
-
-  await transaction.save();
-
-  // Update the product quantity
-  product.quantity = quantity;
-  await product.save();
-
-  // Redirect to transactions page or handle successful transaction creation
-  revalidatePath("/transaction");
-  return redirect("/transaction");
-};
 
 export const deleteTransaction = async (formData: FormData): Promise<void> => {
   const transactionId = formData.get("transactionId");
@@ -106,6 +78,8 @@ export const deleteTransaction = async (formData: FormData): Promise<void> => {
 
   // Delete the transaction
   await TransactionModel.findByIdAndDelete(transactionId);
+
+  revalidatePath("/dashboard");
   revalidatePath("/transaction");
   return redirect("/transaction");
 };

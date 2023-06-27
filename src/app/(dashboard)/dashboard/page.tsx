@@ -3,12 +3,13 @@ import TransactionModel from "@/models/Transaction";
 import ProductModel from "@/models/Product";
 import Link from "next/link";
 import { Transaction } from "@/types";
+import { headers } from "next/headers";
 
 const getTotalTransactions = async () => {
   await connectDB();
 
   try {
-    const totalTransactions = await TransactionModel.countDocuments();
+    const totalTransactions = await TransactionModel.countDocuments().exec();
     return totalTransactions;
   } catch (error) {
     console.error(error);
@@ -45,12 +46,14 @@ const getTotalRevenue = async (): Promise<number> => {
   }
 };
 
-type Props = {};
+export default async function DashboardPage() {
+  const totalTransactions = await getTotalTransactions();
+  const totalProducts = await getTotalProducts();
+  const totalRevenue = await getTotalRevenue();
 
-export default function DashboardPage({}: Props) {
-  const totalTransactions = getTotalTransactions();
-  const totalProducts = getTotalProducts();
-  const totalRevenue = getTotalRevenue();
+  // Force dynamic segment
+  headers();
+
   return (
     <div className="flex flex-col">
       {/* Main Content */}

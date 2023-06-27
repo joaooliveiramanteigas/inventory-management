@@ -193,7 +193,7 @@ export default function TransactionForm({ products }: Props) {
           </select>
         </div>
 
-        <div className="grid grid-cols-4 gap-4 product-list">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 product-list">
           {filteredProducts.map((product) => (
             <div
               key={product._id}
@@ -211,7 +211,7 @@ export default function TransactionForm({ products }: Props) {
         </div>
 
         {selectedProduct && (
-          <div className="flex items-center mt-4">
+          <div className="flex flex-col sm:flex-row items-center mt-4">
             <div className="flex items-center mr-4">
               <button
                 className="px-6 py-3 rounded-full bg-blue-500 text-white"
@@ -238,7 +238,7 @@ export default function TransactionForm({ products }: Props) {
           </div>
         )}
 
-        <div className="flex justify-between mt-4">
+        <div className="flex flex-col sm:flex-row justify-between mt-4">
           <button
             type="submit"
             className={`${
@@ -251,28 +251,15 @@ export default function TransactionForm({ products }: Props) {
           >
             Add to Cart
           </button>
-          <div>
-            <p className="text-lg font-bold mb-2">Total Price:</p>
-            <p className="text-lg font-bold">{totalPrice} EUR</p>
-          </div>
-          <button
-            type="submit"
-            className={`${
-              isSubmitDisabled
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-green-500 hover:bg-green-600"
-            } text-white py-2 px-4 rounded shadow`}
-            onClick={handleSubmit}
-            disabled={isSubmitDisabled}
-          >
-            Submit Transaction
-          </button>
         </div>
 
         <div className="mt-8">
           <h2 className="text-xl font-bold mb-4">Added Products:</h2>
           {addedProducts.map((product) => (
-            <div key={product._id} className="flex items-center mb-2">
+            <div
+              key={product._id}
+              className="flex flex-col sm:flex-row items-center mb-2"
+            >
               <p className="mr-4">{product.name}</p>
               <p className="mr-4">Quantity: {product.quantity}</p>
               <p>
@@ -286,6 +273,24 @@ export default function TransactionForm({ products }: Props) {
               </button>
             </div>
           ))}
+        </div>
+
+        <div className="flex flex-col sm:flex-row justify-between mt-4">
+          <div className="text-right">
+            <p className="text-lg font-bold">Total Price: {totalPrice} EUR</p>
+          </div>
+          <button
+            type="submit"
+            className={`${
+              isSubmitDisabled
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-green-500 hover:bg-green-600"
+            } text-white py-2 px-4 rounded shadow`}
+            onClick={handleSubmit}
+            disabled={isSubmitDisabled}
+          >
+            Submit Transaction
+          </button>
         </div>
       </div>
 
