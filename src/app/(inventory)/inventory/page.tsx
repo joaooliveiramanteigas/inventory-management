@@ -45,15 +45,17 @@ export default async function ProductsPage({ searchParams }: Props) {
           {products.map((product) => (
             <div key={product._id} className="mb-4">
               <Link href={`/product/${product._id}`}>
-                <div className="flex flex-col md:flex-row items-center justify-between p-4 bg-white shadow rounded">
-                  <div>
+                <div className="flex flex-col items-center justify-between p-4 bg-white shadow rounded">
+                  <div className="flex w-full mb-2 justify-between  sm:mb-0">
                     <h3 className="text-lg font-semibold">{product.name}</h3>
                     <p className="text-gray-500">{product.category}</p>
+                  </div>
+                  <div className="flex w-full justify-between ">
                     <p className="text-gray-500">
                       Quantity: {product.quantity}
                     </p>
+                    <p className="text-blue-500">{product.price} EUR</p>
                   </div>
-                  <p className="text-blue-500">{product.price} EUR</p>
                 </div>
               </Link>
             </div>

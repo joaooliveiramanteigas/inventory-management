@@ -47,7 +47,7 @@ export default async function Product({ params }: Props) {
         </h1>
 
         {/* Product Details */}
-        <div className="bg-white shadow p-4 rounded">
+        <div className="bg-white shadow p-4 rounded space-y-3 md:space-y-6">
           <h2 className="text-lg font-semibold">{product?.name}</h2>
           <p>Price: {product?.price}</p>
           <p>Category: {product?.category}</p>

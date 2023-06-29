@@ -22,15 +22,11 @@ const ProductQuantity = ({ product }: { product: Product }) => {
   console.log({ product });
 
   return (
-    <form
-      action={updateProductQuantity}
-      className="flex flex-col sm:flex-row items-center"
-    >
+    <form action={updateProductQuantity} className="flex">
       <input type="hidden" name="productId" value={product._id} />
-      <p className="flex items-center mb-2 sm:mb-0">
-        Quantity:
+      <p className="flex items-center">
         <button
-          className="px-6 py-2 sm:py-3 rounded-full bg-blue-500 text-white ml-2"
+          className="w-1/2 py-2 rounded-full bg-blue-500 text-white ml-2"
           onClick={handleQuantityDecrement}
         >
           -
@@ -39,17 +35,17 @@ const ProductQuantity = ({ product }: { product: Product }) => {
           name="quantity"
           value={quantity}
           onChange={(e) => setQuantity(Number(e.target.value))}
-          className="px-4 py-2 sm:py-3 mx-2 rounded bg-gray-200 w-full sm:w-auto"
+          className="px-4 py-2 mx-2 rounded bg-gray-200 w-1/2 text-center"
         />
         <button
-          className="px-6 py-2 sm:py-3 rounded-full bg-blue-500 text-white"
+          className="w-1/2 py-2 rounded-full bg-blue-500 text-white"
           onClick={handleQuantityIncrement}
         >
           +
         </button>
         {quantity !== Number(product.quantity) && (
           <button
-            className="ml-2 sm:ml-4 px-6 py-2 sm:py-3 rounded-full bg-green-500 text-white w-full sm:w-auto"
+            className="ml-2 px-6 py-2 rounded-full bg-green-500 text-white w-full"
             type="submit"
           >
             Save

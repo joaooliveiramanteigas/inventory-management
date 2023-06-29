@@ -258,19 +258,23 @@ export default function TransactionForm({ products }: Props) {
           {addedProducts.map((product) => (
             <div
               key={product._id}
-              className="flex flex-col sm:flex-row items-center mb-2"
+              className="border border-gray-300 rounded p-4 mb-4 flex flex-col sm:flex-row items-center justify-between"
             >
-              <p className="mr-4">{product.name}</p>
-              <p className="mr-4">Quantity: {product.quantity}</p>
-              <p>
-                Price: {Number(product.price) * Number(product.quantity)} EUR
-              </p>
-              <button
-                className="ml-4 text-red-500 hover:text-red-700"
-                onClick={() => handleDeleteProduct(product._id)}
-              >
-                Delete
-              </button>
+              <div className="flex w-full sm:flex-row mb-2 justify-between md:justify-start sm:mb-0">
+                <p className="font-bold mr-2">{product.name}</p>
+                <p>{product.quantity}</p>
+              </div>
+              <div className="flex w-full sm:flex-row justify-between md:justify-end">
+                <p className="mr-4">
+                  {Number(product.price) * Number(product.quantity)}€
+                </p>
+                <button
+                  className="ml-auto text-red-500 hover:text-red-700"
+                  onClick={() => handleDeleteProduct(product._id)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>

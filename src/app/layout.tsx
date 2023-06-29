@@ -1,6 +1,12 @@
 import Link from "next/link";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import {
+  RiHome2Line,
+  RiDashboardLine,
+  RiShoppingCartLine,
+  RiExchangeDollarLine,
+} from "react-icons/ri";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         {/* Navigation */}
-        <nav className="bg-gray-800 text-white p-3 md:p-5 fixed z-50 w-full md:w-64 h-16 md:h-full">
+        <nav className="bg-gray-800 text-white p-3 md:p-5 fixed z-50 md:w-64 md:h-full hidden md:block">
           <ul className="flex justify-around md:flex-col md:space-y-2">
             <li>
               <Link href="/">Home</Link>
@@ -34,13 +40,36 @@ export default function RootLayout({
             </li>
           </ul>
         </nav>
+
         {/* Main Content */}
         <main className="md:ml-64 p-3">
-          <div className=" w-full md:mt-0 mt-10">
-
-          {children}
-          </div>
+          <div className=" w-full md:mt-0 mt-10">{children}</div>
         </main>
+
+        <nav className="fixed bottom-0 left-0 w-full md:hidden bg-gray-800 h-12">
+          <ul className="flex justify-around py-2 h-full">
+            <li className="text-white self-center">
+              <Link href="/">
+                <RiHome2Line size={24} />
+              </Link>
+            </li>
+            <li className="text-white self-center">
+              <Link href="/dashboard">
+                <RiDashboardLine size={24} />
+              </Link>
+            </li>
+            <li className="text-white self-center">
+              <Link href="/inventory">
+                <RiShoppingCartLine size={24} />
+              </Link>
+            </li>
+            <li className="text-white self-center">
+              <Link href="/transaction">
+                <RiExchangeDollarLine size={24} />
+              </Link>
+            </li>
+          </ul>
+        </nav>
       </body>
     </html>
   );
