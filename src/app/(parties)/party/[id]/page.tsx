@@ -4,7 +4,7 @@ import { connectDB } from "@/db";
 import { notFound } from "next/navigation";
 import { deleteParty } from "@/app/actions";
 
-const getPartyById = async (id: string): Promise<Party | undefined> => {
+const getPartyById = async (id: string) => {
   await connectDB();
 
   try {
@@ -39,8 +39,6 @@ const PartyDetailsPage = async ({ params }: Props) => {
   if (!party) {
     notFound();
   }
-
-  console.log({ party });
 
   return (
     <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-start">

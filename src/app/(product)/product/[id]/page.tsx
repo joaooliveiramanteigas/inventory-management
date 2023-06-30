@@ -10,20 +10,23 @@ import { notFound } from "next/navigation";
 const getProductById = async (id: string): Promise<Product | undefined> => {
   await connectDB();
 
-  let data = null;
   try {
-    const product = await ProductModel.findById(id);
+    const product = await ProductModel.findById(id).lean();
 
     if (!product) {
-      // notFound();
+      return undefined;
     }
 
-    data = product;
+    const { _id, __v, image, ...parsedProduct } = product;
+    return {
+      id: _id.toString(),
+      image: image || "",
+      ...parsedProduct,
+    } as Product;
   } catch (error) {
     console.error(error);
+    return undefined;
   }
-
-  return data;
 };
 
 type Props = {

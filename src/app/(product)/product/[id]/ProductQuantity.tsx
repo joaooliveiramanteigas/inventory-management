@@ -23,7 +23,7 @@ const ProductQuantity = ({ product }: { product: Product }) => {
 
   return (
     <form action={updateProductQuantity} className="flex">
-      <input type="hidden" name="productId" value={product._id} />
+      <input type="hidden" name="productId" value={product.id} />
       <p className="flex items-center">
         <button
           className="w-1/2 py-2 rounded-full bg-blue-500 text-white ml-2"
