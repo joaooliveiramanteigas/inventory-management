@@ -39,7 +39,7 @@ export default function RootLayout({
               <Link href="/transaction">Transactions</Link>
             </li>
             <li>
-              <Link href="/party/create">Parties</Link>
+              <Link href="/parties">Parties</Link>
             </li>
           </ul>
         </nav>

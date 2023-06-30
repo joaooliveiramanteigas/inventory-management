@@ -6,6 +6,8 @@ const getAllProducts = async (page = 1, limit = 10) => {
   await connectDB();
 
   try {
+   
+
     const products = await ProductModel.find()
       .skip((page - 1) * limit)
       .limit(limit)
