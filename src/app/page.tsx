@@ -9,20 +9,40 @@ export default function Home() {
           Home
         </h1>
 
-        {/* Add a Product */}
-        <div className="flex justify-center mb-8">
-          <div className="w-72 h-12 bg-blue-500 text-white py-3 px-5 rounded shadow hover:bg-blue-600">
-            <Link className="text-lg" href="/product/create">
-              Add a Product
+        {/* See Section */}
+        <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0 mb-8">
+          <div className="w-full md:w-1/2 h-12 bg-blue-500 text-white py-3 px-5 rounded shadow hover:bg-blue-600">
+            <Link className="text-lg" href="/inventory">
+              Products
+            </Link>
+          </div>
+          <div className="w-full md:w-1/2 h-12 bg-green-500 text-white py-3 px-5 rounded shadow hover:bg-green-600">
+            <Link className="text-lg" href="/transaction">
+              Transactions
+            </Link>
+          </div>
+          <div className="w-full md:w-1/2 h-12 bg-green-500 text-white py-3 px-5 rounded shadow hover:bg-green-600">
+            <Link className="text-lg" href="/parties">
+              Parties
             </Link>
           </div>
         </div>
 
-        {/* Add a Transaction */}
-        <div className="flex justify-center">
-          <div className="w-72 h-12 bg-green-500 text-white py-3 px-5 rounded shadow hover:bg-green-600">
+        {/* Add Section */}
+        <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
+          <div className="w-full md:w-1/2 h-12 bg-blue-500 text-white py-3 px-5 rounded shadow hover:bg-blue-600">
+            <Link className="text-lg" href="/product/create">
+              Add a Product
+            </Link>
+          </div>
+          <div className="w-full md:w-1/2 h-12 bg-green-500 text-white py-3 px-5 rounded shadow hover:bg-green-600">
             <Link className="text-lg" href="/transaction/create">
               Add a Transaction
+            </Link>
+          </div>
+          <div className="w-full md:w-1/2 h-12 bg-green-500 text-white py-3 px-5 rounded shadow hover:bg-green-600">
+            <Link className="text-lg" href="/party/create">
+              Add a Party
             </Link>
           </div>
         </div>

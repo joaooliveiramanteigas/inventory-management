@@ -27,7 +27,7 @@ export default function TransactionForm({ products }: Props) {
   const [addedProducts, setAddedProducts] = useState<Product[]>([]);
 
   const handleProductClick = (product: Product) => {
-    if (selectedProduct && selectedProduct._id === product._id) {
+    if (selectedProduct && selectedProduct.id === product.id) {
       setSelectedProduct(null);
       setQuantity(0);
     } else {
@@ -77,7 +77,7 @@ export default function TransactionForm({ products }: Props) {
   const handleAddProduct = () => {
     if (quantity > 0 && selectedProduct) {
       const existingProductIndex = addedProducts.findIndex(
-        (product) => product._id === selectedProduct?._id
+        (product) => product.id === selectedProduct?.id
       );
 
       if (existingProductIndex !== -1) {
@@ -96,9 +96,9 @@ export default function TransactionForm({ products }: Props) {
         setAddedProducts(updatedProducts);
       } else {
         // ensure we only take the fields that are part of the Product type
-        const { _id, name, price, image, category } = selectedProduct;
+        const { id, name, price, image, category } = selectedProduct;
         const addedProduct = {
-          _id,
+          id,
           name,
           price,
           image,
@@ -116,14 +116,14 @@ export default function TransactionForm({ products }: Props) {
 
   const handleDeleteProduct = (productId: string) => {
     const updatedProducts = addedProducts.filter(
-      (product) => product._id !== productId
+      (product) => product.id !== productId
     );
     setAddedProducts(updatedProducts);
   };
 
   const handleSubmit = async () => {
     const products = addedProducts.map((addedProduct) => {
-      return { ...addedProduct, productId: addedProduct._id };
+      return { ...addedProduct, productId: addedProduct.id };
     });
     const totalPrice = addedProducts.reduce(
       (total, product) =>
@@ -196,14 +196,14 @@ export default function TransactionForm({ products }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 product-list">
           {filteredProducts.map((product) => (
             <div
-              key={product._id}
+              key={product.id}
               className={`product-item ${
-                selectedProduct?._id === product._id ? "selected" : ""
+                selectedProduct?.id === product.id ? "selected" : ""
               }`}
               onClick={() => handleProductClick(product)}
             >
               <h3>{product.name}</h3>
-              <p className={selectedProduct?._id === product._id ? "bold" : ""}>
+              <p className={selectedProduct?.id === product.id ? "bold" : ""}>
                 Price: {product.price}
               </p>
             </div>
@@ -257,7 +257,7 @@ export default function TransactionForm({ products }: Props) {
           <h2 className="text-xl font-bold mb-4">Added Products:</h2>
           {addedProducts.map((product) => (
             <div
-              key={product._id}
+              key={product.id}
               className="border border-gray-300 rounded p-4 mb-4 flex flex-col sm:flex-row items-center justify-between"
             >
               <div className="flex w-full sm:flex-row mb-2 justify-between md:justify-start sm:mb-0">
@@ -270,7 +270,7 @@ export default function TransactionForm({ products }: Props) {
                 </p>
                 <button
                   className="ml-auto text-red-500 hover:text-red-700"
-                  onClick={() => handleDeleteProduct(product._id)}
+                  onClick={() => handleDeleteProduct(product.id)}
                 >
                   Delete
                 </button>

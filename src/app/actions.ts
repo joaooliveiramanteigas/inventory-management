@@ -7,6 +7,7 @@ import ProductModel from "@/models/Product";
 import TransactionModel from "@/models/Transaction";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import PartyModel from "@/models/Party";
 
 // Ensure the database connection is established
 connectDB();
@@ -28,6 +29,43 @@ export async function createProduct(formData: FormData) {
   return redirect(`/product/${savedProduct.id}`);
 }
 
+export async function createParty(formData: FormData) {
+  // Create a new party instance using the data
+  const name = formData.get("name") as string;
+  const description = formData.get("description") as string;
+  const month = formData.get("month") as string;
+  const startDate = formData.get("startDate") as string;
+  const endDate = formData.get("endDate") as string;
+  const location = formData.get("location") as string;
+
+  // Validate the data
+  if (!name || !description || !month || !startDate || !endDate || !location) {
+    return { error: "Required fields are missing" };
+  }
+
+  const parsedStartDate = new Date(startDate);
+  const parsedEndDate = new Date(endDate);
+
+  if (parsedStartDate >= parsedEndDate) {
+    return { error: "End date must be greater than start date" };
+  }
+
+  // Create a new party instance using the retrieved data
+  const party = new PartyModel({
+    name,
+    description,
+    month,
+    period: { startDate: parsedStartDate, endDate: parsedEndDate },
+    location,
+  });
+
+  // Save the party to the database
+  const savedParty = await party.save();
+
+  revalidatePath("/parties");
+  return redirect(`/party/${savedParty.id}`);
+}
+
 export async function deleteProduct(
   formData: FormData
 ): Promise<{ error: boolean } | void> {
@@ -37,6 +75,18 @@ export async function deleteProduct(
 
   revalidatePath("/inventory");
   return redirect("/inventory");
+}
+
+export async function deleteParty(
+  formData: FormData
+): Promise<{ error: boolean } | void> {
+  const partyId = formData.get("partyId");
+  console.log({ partyId });
+
+  await PartyModel.findByIdAndDelete(partyId);
+
+  revalidatePath("/parties");
+  return redirect("/parties");
 }
 
 export async function passwordChecker(

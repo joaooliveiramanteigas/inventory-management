@@ -38,6 +38,9 @@ export default function RootLayout({
             <li>
               <Link href="/transaction">Transactions</Link>
             </li>
+            <li>
+              <Link href="/party/create">Parties</Link>
+            </li>
           </ul>
         </nav>
 
@@ -64,7 +67,7 @@ export default function RootLayout({
               </Link>
             </li>
             <li className="text-white self-center">
-              <Link href="/transaction">
+              <Link href="/transaction/create">
                 <RiExchangeDollarLine size={24} />
               </Link>
             </li>

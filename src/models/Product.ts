@@ -1,9 +1,18 @@
 import mongoose from "@/db";
+import { Model, Schema } from "mongoose";
 
 delete mongoose.models.Product;
+export interface IProduct extends Document {
+  name: string;
+  price: string;
+  image?: string;
+  category: string;
+  quantity: number;
+  __v?: number;
+}
 
 // Define your product schema
-const productSchema = new mongoose.Schema({
+const productSchema: Schema<IProduct> = new mongoose.Schema({
   name: { type: String, required: true },
   price: { type: String, required: true },
   image: { type: String },
@@ -18,7 +27,7 @@ const productSchema = new mongoose.Schema({
 });
 
 // Create the Mongoose model
-const ProductModel =
-  mongoose.models.Product || mongoose.model("Product", productSchema);
+const ProductModel: Model<IProduct> =
+  mongoose.models.Product || mongoose.model<IProduct>("Product", productSchema);
 
 export default ProductModel;

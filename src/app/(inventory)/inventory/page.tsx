@@ -9,8 +9,14 @@ const getAllProducts = async (page = 1, limit = 10) => {
     const products = await ProductModel.find()
       .skip((page - 1) * limit)
       .limit(limit)
+      .lean()
       .exec();
-    return products;
+
+    const parsedProducts = products.map((product) => {
+      const { _id, __v, ...parsedProduct } = product;
+      return { id: _id.toString(), ...parsedProduct };
+    });
+    return parsedProducts;
   } catch (error) {
     console.error(error);
     return [];
@@ -43,8 +49,8 @@ export default async function ProductsPage({ searchParams }: Props) {
         {/* Product List */}
         <div>
           {products.map((product) => (
-            <div key={product._id} className="mb-4">
-              <Link href={`/product/${product._id}`}>
+            <div key={product.id} className="mb-4">
+              <Link href={`/product/${product.id}`}>
                 <div className="flex flex-col items-center justify-between p-4 bg-white shadow rounded">
                   <div className="flex w-full mb-2 justify-between  sm:mb-0">
                     <h3 className="text-lg font-semibold">{product.name}</h3>
