@@ -19,8 +19,6 @@ const ProductQuantity = ({ product }: { product: Product }) => {
     }
   };
 
-  console.log({ product });
-
   return (
     <form action={updateProductQuantity} className="flex">
       <input type="hidden" name="productId" value={product.id} />

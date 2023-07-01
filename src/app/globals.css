@@ -2,31 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.left-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 200px;
-  background-color: #f1f1f1;
-  padding: 20px;
-}
-
-.left-nav ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.left-nav li {
-  margin-bottom: 10px;
-}
-
-.left-nav a {
-  color: #333;
-  text-decoration: none;
-}
-
 .product-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

@@ -1,32 +1,5 @@
-import { connectDB } from "@/db";
-import PartyModel from "@/models/Party";
+import { getPaginatedParties, getTotalParties } from "@/utils/services";
 import Link from "next/link";
-
-const getAllParties = async (page = 1, limit = 10) => {
-  await connectDB();
-
-  try {
-    const parties = await PartyModel.find()
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .lean()
-      .exec();
-
-    const parsedParties = parties.map((party) => {
-      const { _id, __v, period, ...parsedParty } = party;
-      const parsedPeriod = {
-        startDate: new Date(period.startDate).toLocaleDateString(),
-        endDate: new Date(period.endDate).toLocaleDateString(),
-      };
-      return { id: _id.toString(), period: parsedPeriod, ...parsedParty };
-    });
-
-    return parsedParties;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-};
 
 type Props = {
   searchParams: { page: string; limit: string };
@@ -36,10 +9,10 @@ export default async function PartiesPage({ searchParams }: Props) {
   const page = Number(searchParams.page) || 1;
   const limit = Number(searchParams.limit) || 10;
 
-  const parties = await getAllParties(page, limit);
+  const parties = await getPaginatedParties(page, limit);
 
   // Calculate the total number of parties and pages
-  const totalParties = await PartyModel.countDocuments();
+  const totalParties = await getTotalParties();
   const totalPages = Math.ceil(totalParties / limit);
   const currentPage = Number(page);
 

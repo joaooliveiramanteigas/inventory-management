@@ -1,31 +1,7 @@
-import PartyModel from "@/models/Party";
 import Link from "next/link";
-import { connectDB } from "@/db";
 import { notFound } from "next/navigation";
 import { deleteParty } from "@/app/actions";
-
-const getPartyById = async (id: string) => {
-  await connectDB();
-
-  try {
-    const party = await PartyModel.findById(id).lean();
-
-    if (!party) {
-      return undefined;
-    }
-
-    const { _id, __v, period, ...parsedParty } = party;
-    const parsedPeriod = {
-      startDate: period.startDate.toString(),
-      endDate: period.endDate.toString(),
-    };
-
-    return { id: _id.toString(), period: parsedPeriod, ...parsedParty };
-  } catch (error) {
-    console.error(error);
-    return undefined;
-  }
-};
+import { getPartyById } from "@/utils/services";
 
 type Props = {
   params: { id: string };

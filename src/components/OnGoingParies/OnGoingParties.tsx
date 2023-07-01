@@ -1,26 +1,5 @@
-import { connectDB } from "@/db";
-import PartyModel, { IParty } from "@/models/Party";
 import Parties from "./Parties";
-
-const getOngoingParties = async (): Promise<IParty[]> => {
-  await connectDB();
-
-  const currentDate = new Date();
-  const currentMonthDate = currentDate.toISOString().slice(5, 10); // Extract month and date (MM-DD) from ISO string
-
-  const parties = await PartyModel.find({
-    $expr: {
-      $and: [
-        { $lte: [{ $substr: ["$period.startDate", 5, 5] }, currentMonthDate] }, // Compare only month and date
-        { $gte: [{ $substr: ["$period.endDate", 5, 5] }, currentMonthDate] }, // Compare only month and date
-      ],
-    },
-  })
-    .lean()
-    .exec();
-
-  return parties;
-};
+import { getOngoingParties } from "@/utils/services";
 
 export default async function OnGoingParties() {
   const onGoingParties = await getOngoingParties();

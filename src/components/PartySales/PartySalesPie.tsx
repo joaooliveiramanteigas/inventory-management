@@ -1,7 +1,7 @@
 "use client";
 import { Pie } from "react-chartjs-2";
 import { ArcElement, Tooltip, Legend, Chart } from "chart.js";
-import { CustomChartData } from "../ProductSales/ProductSales";
+import { CustomChartData } from "@/types";
 
 Chart.register(ArcElement, Tooltip, Legend);
 

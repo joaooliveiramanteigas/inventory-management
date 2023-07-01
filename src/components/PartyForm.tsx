@@ -13,7 +13,6 @@ const PartyForm = () => {
       setError(body.error);
       return;
     }
-    //success
   };
 
   return (

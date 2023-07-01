@@ -2,7 +2,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+First, to run the development server you will need a Mongo Database URI:
+
+Add a .env file and add the `NEXT_APP_MONGO_URI` variable.
 
 ```bash
 npm run dev

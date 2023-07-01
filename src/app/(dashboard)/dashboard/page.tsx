@@ -1,57 +1,14 @@
-import { connectDB } from "@/db";
-import TransactionModel from "@/models/Transaction";
-import ProductModel from "@/models/Product";
 import Link from "next/link";
-import { Transaction } from "@/types";
-import { headers } from "next/headers";
 import { Suspense } from "react";
 import ProductSales from "@/components/ProductSales/ProductSales";
-import ProductSalesPieSkeleton from "@/components/ProductSales/ProductSalesPieSkeleton";
-import PartySalesPie from "@/components/PartySales/PartySalesPie";
 import PartySales from "@/components/PartySales/PartySales";
+import {
+  getTotalProducts,
+  getTotalRevenue,
+  getTotalTransactions,
+} from "@/utils/services";
+import PieSkeleton from "@/components/PieSkeleton";
 
-const getTotalTransactions = async () => {
-  await connectDB();
-
-  try {
-    const totalTransactions = await TransactionModel.countDocuments().exec();
-    return totalTransactions;
-  } catch (error) {
-    console.error(error);
-    return 0;
-  }
-};
-
-const getTotalProducts = async () => {
-  await connectDB();
-
-  try {
-    const totalProducts = await ProductModel.countDocuments();
-    return totalProducts;
-  } catch (error) {
-    console.error(error);
-    return 0;
-  }
-};
-
-const getTotalRevenue = async (): Promise<number> => {
-  await connectDB();
-
-  try {
-    const transactions = await TransactionModel.find().exec();
-    const totalRevenue = transactions.reduce(
-      (sum, transaction: Transaction & Document) =>
-        sum + transaction.totalPrice,
-      0
-    );
-    return totalRevenue;
-  } catch (error) {
-    console.error(error);
-    return 0;
-  }
-};
-
-export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 type Props = {
@@ -59,12 +16,6 @@ type Props = {
 };
 
 export default async function DashboardPage({ searchParams }: Props) {
-  const totalTransactions = await getTotalTransactions();
-  const totalProducts = await getTotalProducts();
-  const totalRevenue = await getTotalRevenue();
-
-  headers();
-
   return (
     <div className="flex flex-col">
       {/* Main Content */}
@@ -77,15 +28,21 @@ export default async function DashboardPage({ searchParams }: Props) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="p-4 bg-white shadow rounded">
             <h3 className="text-lg font-semibold">Total Transactions</h3>
-            <p className="text-gray-500">{totalTransactions}</p>
+            <Suspense fallback={<p>Loading</p>}>
+              <TotalTransactions />
+            </Suspense>
           </div>
           <div className="p-4 bg-white shadow rounded">
             <h3 className="text-lg font-semibold">Total Products</h3>
-            <p className="text-gray-500">{totalProducts}</p>
+            <Suspense fallback={<p>Loading</p>}>
+              <TotalProducts />
+            </Suspense>
           </div>
           <div className="p-4 bg-white shadow rounded">
             <h3 className="text-lg font-semibold">Total Revenue</h3>
-            <p className="text-gray-500">{totalRevenue} EUR</p>
+            <Suspense fallback={<p>Loading</p>}>
+              <TotalRevenue />
+            </Suspense>
           </div>
         </div>
 
@@ -93,14 +50,14 @@ export default async function DashboardPage({ searchParams }: Props) {
         <div className="mt-8">
           <h2 className="text-lg font-semibold mb-4">Products Sales</h2>
 
-          <Suspense fallback={<ProductSalesPieSkeleton />}>
+          <Suspense fallback={<PieSkeleton />}>
             <ProductSales />
           </Suspense>
         </div>
         <div className="mt-8">
           <h2 className="text-lg font-semibold mb-4">Party Sales</h2>
 
-          <Suspense fallback={<ProductSalesPieSkeleton />}>
+          <Suspense fallback={<PieSkeleton />}>
             <PartySales />
           </Suspense>
         </div>
@@ -121,4 +78,22 @@ export default async function DashboardPage({ searchParams }: Props) {
       </div>
     </div>
   );
+}
+
+async function TotalTransactions() {
+  const totalTransactions = await getTotalTransactions();
+
+  return <p className="text-gray-500">{totalTransactions}</p>;
+}
+
+async function TotalProducts() {
+  const totalProducts = await getTotalProducts();
+
+  return <p className="text-gray-500">{totalProducts}</p>;
+}
+
+async function TotalRevenue() {
+  const totalRevenue = await getTotalRevenue();
+
+  return <p className="text-gray-500">{totalRevenue} EUR</p>;
 }

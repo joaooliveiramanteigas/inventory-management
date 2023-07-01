@@ -1,27 +1,6 @@
-import { connectDB } from "@/db";
 import ProductModel from "@/models/Product";
+import { getPaginatedProducts } from "@/utils/services";
 import Link from "next/link";
-
-const getAllProducts = async (page = 1, limit = 10) => {
-  await connectDB();
-
-  try {
-    const products = await ProductModel.find()
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .lean()
-      .exec();
-
-    const parsedProducts = products.map((product) => {
-      const { _id, __v, ...parsedProduct } = product;
-      return { id: _id.toString(), ...parsedProduct };
-    });
-    return parsedProducts;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-};
 
 type Props = {
   searchParams: { page: string; limit: string };
@@ -31,7 +10,7 @@ export default async function ProductsPage({ searchParams }: Props) {
   const page = Number(searchParams.page) || 1;
   const limit = Number(searchParams.limit) || 10;
 
-  const products = await getAllProducts(page, limit);
+  const products = await getPaginatedProducts(page, limit);
 
   // Calculate the total number of products and pages
   const totalProducts = await ProductModel.countDocuments();

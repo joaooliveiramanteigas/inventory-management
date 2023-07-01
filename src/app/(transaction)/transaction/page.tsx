@@ -1,56 +1,18 @@
-import { connectDB } from "@/db";
-import TransactionModel from "@/models/Transaction";
 import ProductModel from "@/models/Product";
 import Link from "next/link";
 import { deleteTransaction } from "@/app/actions";
-import { Transaction } from "@/types";
-import { Types } from "mongoose";
-
-type ActualTransactionProduct = {
-  productName: any;
-  productId: Types.ObjectId;
-  quantity: number;
-};
-
-type ActualTransaction = {
-  products: ActualTransactionProduct[];
-  totalPrice: number;
-  createdDate: Date;
-  partyId: Types.ObjectId;
-  partyName?: string;
-  id?: string | undefined;
-};
+import {
+  ActualTransaction,
+  ActualTransactionProduct,
+  TransactionProduct,
+} from "@/types";
+import { getPaginatedTransactions } from "@/utils/services/transactionService";
+import { getTotalTransactions } from "@/utils/services";
 
 function getProductNames(products: ActualTransactionProduct[]): string {
   const productNames = products.map((transaction) => transaction.productName);
   return productNames.join(", ");
 }
-const getAllTransactions = async (
-  page = 1,
-  limit = 10
-): Promise<Transaction[]> => {
-  await connectDB();
-
-  try {
-    const transactions = await TransactionModel.find()
-      .sort({ createdDate: -1 })
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .populate("partyId", "name") // Populate the "partyId" field with the "name" field of the party
-      .exec();
-
-    const plainTransactions = transactions.map((transaction: any) => {
-      const { partyId, ...transactionData } = transaction.toJSON();
-      const partyName = partyId ? partyId.name : ""; // Get the party name if "partyId" exists
-      return { ...transactionData, id: transaction._id, partyName };
-    });
-
-    return plainTransactions;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-};
 
 type Props = {
   searchParams: { page: string; limit: string };
@@ -60,12 +22,8 @@ export default async function TransactionsPage({ searchParams }: Props) {
   const page = Number(searchParams.page) || 1;
   const limit = Number(searchParams.limit) || 10;
 
-  const transactions = await getAllTransactions(page, limit);
+  const transactions = await getPaginatedTransactions(page, limit);
 
-  type TransactionProduct = {
-    productId: Types.ObjectId;
-    quantity: number;
-  };
   // Fetch product information for each transaction
   const transactionsWithProducts = await Promise.all(
     transactions.map(async (transaction) => {
@@ -89,7 +47,7 @@ export default async function TransactionsPage({ searchParams }: Props) {
   );
 
   // Calculate the total number of transactions and pages
-  const totalTransactions = await TransactionModel.countDocuments();
+  const totalTransactions = await getTotalTransactions();
   const totalPages = Math.ceil(totalTransactions / limit);
   const currentPage = Number(page);
 

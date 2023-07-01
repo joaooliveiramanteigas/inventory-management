@@ -1,33 +1,9 @@
-import ProductModel from "@/models/Product";
 import Link from "next/link";
-
-import { connectDB } from "@/db";
 import { deleteProduct } from "@/app/actions";
 import { Product } from "@/types";
 import ProductQuantity from "./ProductQuantity";
 import { notFound } from "next/navigation";
-
-const getProductById = async (id: string): Promise<Product | undefined> => {
-  await connectDB();
-
-  try {
-    const product = await ProductModel.findById(id).lean();
-
-    if (!product) {
-      return undefined;
-    }
-
-    const { _id, __v, image, ...parsedProduct } = product;
-    return {
-      id: _id.toString(),
-      image: image || "",
-      ...parsedProduct,
-    } as Product;
-  } catch (error) {
-    console.error(error);
-    return undefined;
-  }
-};
+import { getProductById } from "@/utils/services";
 
 type Props = {
   params: { id: string };
