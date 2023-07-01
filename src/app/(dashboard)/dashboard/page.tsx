@@ -4,6 +4,9 @@ import ProductModel from "@/models/Product";
 import Link from "next/link";
 import { Transaction } from "@/types";
 import { headers } from "next/headers";
+import { Suspense } from "react";
+import ProductSales from "@/components/ProductSales/ProductSales";
+import ProductSalesPieSkeleton from "@/components/ProductSales/ProductSalesPieSkeleton";
 
 const getTotalTransactions = async () => {
   await connectDB();
@@ -46,7 +49,7 @@ const getTotalRevenue = async (): Promise<number> => {
   }
 };
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 type Props = {
@@ -84,15 +87,24 @@ export default async function DashboardPage({ searchParams }: Props) {
           </div>
         </div>
 
+        {/* Pie chart */}
+        <div className="mt-8">
+          <h2 className="text-lg font-semibold mb-4">Products Sales</h2>
+
+          <Suspense fallback={<ProductSalesPieSkeleton />}>
+            <ProductSales />
+          </Suspense>
+        </div>
+
         {/* Actions */}
         <div className="flex flex-col md:flex-row justify-center mt-8 space-y-4 md:space-y-0 md:space-x-4">
           <Link href="/product/create">
-            <div className="w-full md:w-64 bg-blue-500 text-white py-2 px-4 rounded shadow hover:bg-blue-600">
+            <div className="w-full lg:w-64 md:w-44 bg-blue-500 text-white py-2 px-4 rounded shadow hover:bg-blue-600">
               Add a Product
             </div>
           </Link>
           <Link href="/transaction/create">
-            <div className="w-full md:w-64 bg-green-500 text-white py-2 px-4 rounded shadow hover:bg-green-600">
+            <div className="w-full lg:w-64 md:w-44 bg-green-500 text-white py-2 px-4 rounded shadow hover:bg-green-600">
               Add a Transaction
             </div>
           </Link>
