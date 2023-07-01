@@ -7,6 +7,8 @@ export interface Transaction {
     // Add other product-related fields as needed
     // ...
   }[];
+  partyId: mongoose.Types.ObjectId;
+  partyName?: string;
   // Add other transaction properties as needed
   totalPrice: number;
   createdDate: Date; // Add the createdDate field

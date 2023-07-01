@@ -7,6 +7,8 @@ import { headers } from "next/headers";
 import { Suspense } from "react";
 import ProductSales from "@/components/ProductSales/ProductSales";
 import ProductSalesPieSkeleton from "@/components/ProductSales/ProductSalesPieSkeleton";
+import PartySalesPie from "@/components/PartySales/PartySalesPie";
+import PartySales from "@/components/PartySales/PartySales";
 
 const getTotalTransactions = async () => {
   await connectDB();
@@ -93,6 +95,13 @@ export default async function DashboardPage({ searchParams }: Props) {
 
           <Suspense fallback={<ProductSalesPieSkeleton />}>
             <ProductSales />
+          </Suspense>
+        </div>
+        <div className="mt-8">
+          <h2 className="text-lg font-semibold mb-4">Party Sales</h2>
+
+          <Suspense fallback={<ProductSalesPieSkeleton />}>
+            <PartySales />
           </Suspense>
         </div>
 

@@ -1,33 +1,24 @@
-import ProductModel from "@/models/Product";
 import TransactionModel from "@/models/Transaction";
-import ProductSalesPie from "./ProductSalesPie";
-
-export type ProductData = {
-  label: string;
-  value: number;
-  backgroundColor: string;
-};
-export type CustomChartData = {
-  labels: string[];
-  datasets: {
-    label: string;
-    data: number[];
-    backgroundColor: string[];
-  }[];
-};
-
-export type TransactionProduct = {
-  productId: string;
-  quantity: number;
-};
-
-const fetchProductSales = async (): Promise<CustomChartData> => {
+import {
+  CustomChartData,
+  ProductData,
+  TransactionProduct,
+  generateRandomColor,
+} from "../ProductSales/ProductSales";
+import ProductModel from "@/models/Product";
+import PartySalesPie from "./PartySalesPie";
+import PartyModel from "@/models/Party";
+const fetchPartySales = async (): Promise<CustomChartData> => {
   const transactions = await TransactionModel.find().exec();
 
-  const productData: { [productId: string]: ProductData } = {};
+  const productData: { [partyId: string]: ProductData } = {};
 
   await Promise.all(
     transactions.map(async (transaction) => {
+      const partyId = transaction.partyId ? transaction.partyId.toString() : "";
+      const party = await PartyModel.findById(transaction.partyId).exec();
+      const partyName = party ? party.name : "No Party";
+
       await Promise.all(
         transaction.products.map(async (product: TransactionProduct) => {
           const productId = product.productId.toString();
@@ -37,11 +28,11 @@ const fetchProductSales = async (): Promise<CustomChartData> => {
           if (fetchedProduct) {
             const totalValue = quantity * Number(fetchedProduct.price);
 
-            if (productData[productId]) {
-              productData[productId].value += totalValue;
+            if (productData[partyId]) {
+              productData[partyId].value += totalValue;
             } else {
-              productData[productId] = {
-                label: fetchedProduct.name,
+              productData[partyId] = {
+                label: partyName,
                 value: totalValue,
                 backgroundColor: generateRandomColor(),
               };
@@ -68,17 +59,8 @@ const fetchProductSales = async (): Promise<CustomChartData> => {
   return data;
 };
 
-export const generateRandomColor = (): string => {
-  const letters = "0123456789ABCDEF";
-  let color = "#";
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-};
-
-export default async function ProductSales() {
-  const productData = await fetchProductSales();
+export default async function PartySales() {
+  const productData = await fetchPartySales();
 
   return (
     <div className="flex justify-center items-center h-full">
@@ -87,7 +69,7 @@ export default async function ProductSales() {
           <p className="text-gray-500 mb-2">No sales to show</p>
         </div>
       ) : (
-        <ProductSalesPie productData={productData} />
+        <PartySalesPie productData={productData} />
       )}
     </div>
   );

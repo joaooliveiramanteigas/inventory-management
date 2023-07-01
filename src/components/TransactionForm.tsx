@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 type Props = {
   products: Product[];
+  selectedParty: string;
   partyOptions: {
     value: string;
     label: string;
@@ -23,11 +24,16 @@ function reduceCategories(products: Product[]): string[] {
   return categories;
 }
 
-export default function TransactionForm({ products, partyOptions }: Props) {
+export default function TransactionForm({
+  products,
+  partyOptions,
+  selectedParty: chosenParty,
+}: Props) {
   const router = useRouter();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState<number>(0);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedParty, setSelectedParty] = useState<string>(chosenParty);
   const [addedProducts, setAddedProducts] = useState<Product[]>([]);
 
   const handleProductClick = (product: Product) => {
@@ -38,6 +44,12 @@ export default function TransactionForm({ products, partyOptions }: Props) {
       setSelectedProduct(product);
       setQuantity(0);
     }
+  };
+
+  const handlePartyChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(event.target.value);
+    setSelectedParty(event.target.value);
+    router.push(`/transaction/create?partyId=${event.target.value}`);
   };
 
   const handleCategoryChange = (
@@ -141,7 +153,7 @@ export default function TransactionForm({ products, partyOptions }: Props) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ products, totalPrice }),
+        body: JSON.stringify({ products, totalPrice, partyId: selectedParty }),
       });
 
       if (response.ok) {
@@ -203,8 +215,9 @@ export default function TransactionForm({ products, partyOptions }: Props) {
             </label>
             <select
               id="partyName"
-              // onChange={handlePartyNameChange}
+              onChange={handlePartyChange}
               className="border border-gray-300 rounded-md px-2 py-1 w-full"
+              value={selectedParty}
             >
               <option value="">All</option>
               {partyOptions.map((option) => (

@@ -1,9 +1,9 @@
 import { connectDB } from "@/db";
-import TransactionModel, { ITransaction } from "@/models/Transaction";
+import TransactionModel from "@/models/Transaction";
 import ProductModel from "@/models/Product";
 import Link from "next/link";
 import { deleteTransaction } from "@/app/actions";
-import { Product, Transaction } from "@/types";
+import { Transaction } from "@/types";
 import { Types } from "mongoose";
 
 type ActualTransactionProduct = {
@@ -11,10 +11,13 @@ type ActualTransactionProduct = {
   productId: Types.ObjectId;
   quantity: number;
 };
+
 type ActualTransaction = {
   products: ActualTransactionProduct[];
   totalPrice: number;
   createdDate: Date;
+  partyId: Types.ObjectId;
+  partyName?: string;
   id?: string | undefined;
 };
 
@@ -30,16 +33,17 @@ const getAllTransactions = async (
 
   try {
     const transactions = await TransactionModel.find()
-      .sort({ createdDate: -1 }) // Sort transactions in ascending order based on the createdDate field
+      .sort({ createdDate: -1 })
       .skip((page - 1) * limit)
       .limit(limit)
+      .populate("partyId", "name") // Populate the "partyId" field with the "name" field of the party
       .exec();
 
-    const plainTransactions = transactions.map(
-      (transaction: Transaction & ITransaction) => {
-        return { ...transaction.toJSON(), id: transaction._id };
-      }
-    );
+    const plainTransactions = transactions.map((transaction: any) => {
+      const { partyId, ...transactionData } = transaction.toJSON();
+      const partyName = partyId ? partyId.name : ""; // Get the party name if "partyId" exists
+      return { ...transactionData, id: transaction._id, partyName };
+    });
 
     return plainTransactions;
   } catch (error) {
@@ -89,6 +93,7 @@ export default async function TransactionsPage({ searchParams }: Props) {
   const totalPages = Math.ceil(totalTransactions / limit);
   const currentPage = Number(page);
 
+  console.log({ ui: transactions[0] });
   return (
     <div className="flex">
       {/* Main Content */}
@@ -124,6 +129,11 @@ export default async function TransactionsPage({ searchParams }: Props) {
                     <p className="text-gray-500 border-green-900">
                       Value: {transaction.totalPrice} EUR
                     </p>
+                    {transaction.partyName && (
+                      <p className="text-gray-500 border-green-900">
+                        Party: {transaction.partyName}
+                      </p>
+                    )}
                   </div>
                   <form action={deleteTransaction}>
                     <input

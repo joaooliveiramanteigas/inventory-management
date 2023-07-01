@@ -6,9 +6,15 @@ const getOngoingParties = async (): Promise<IParty[]> => {
   await connectDB();
 
   const currentDate = new Date();
+  const currentMonthDate = currentDate.toISOString().slice(5, 10); // Extract month and date (MM-DD) from ISO string
+
   const parties = await PartyModel.find({
-    "period.startDate": { $lte: currentDate },
-    "period.endDate": { $gte: currentDate },
+    $expr: {
+      $and: [
+        { $lte: [{ $substr: ["$period.startDate", 5, 5] }, currentMonthDate] }, // Compare only month and date
+        { $gte: [{ $substr: ["$period.endDate", 5, 5] }, currentMonthDate] }, // Compare only month and date
+      ],
+    },
   })
     .lean()
     .exec();
@@ -19,7 +25,7 @@ const getOngoingParties = async (): Promise<IParty[]> => {
 export default async function OnGoingParties() {
   const onGoingParties = await getOngoingParties();
 
-  if (!onGoingParties) {
+  if (!onGoingParties || onGoingParties.length === 0) {
     return (
       <div className="flex justify-center items-center h-full">
         <p className="text-gray-500">No ongoing parties at the moment.</p>

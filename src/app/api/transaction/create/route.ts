@@ -10,10 +10,14 @@ export async function POST(request: NextRequest) {
 
   console.log({ method: request.method });
   try {
-    const { products, totalPrice } = await request.json();
+    const { products, totalPrice, partyId } = await request.json();
 
     // Create a new transaction instance using the request body
     const transaction = new TransactionModel({ products, totalPrice });
+
+    if (partyId) {
+      transaction.partyId = partyId;
+    }
 
     // Save the transaction to the database
     await transaction.save();

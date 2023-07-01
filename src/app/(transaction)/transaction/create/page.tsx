@@ -57,7 +57,7 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 type Props = {
-  searchParams: {};
+  searchParams: { partyId: string };
 };
 
 export default async function CreateProduct({ searchParams }: Props) {
@@ -70,6 +70,14 @@ export default async function CreateProduct({ searchParams }: Props) {
     label: party.name,
   }));
 
+  const selectedParty = searchParams.partyId || "";
+
   // headers();
-  return <TransactionForm products={products} partyOptions={partyOptions} />;
+  return (
+    <TransactionForm
+      products={products}
+      partyOptions={partyOptions}
+      selectedParty={selectedParty}
+    />
+  );
 }
