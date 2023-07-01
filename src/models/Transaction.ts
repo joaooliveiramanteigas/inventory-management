@@ -5,6 +5,7 @@ delete mongoose.models.Transaction;
 
 export interface ITransaction extends Document {
   toJSON(): any;
+  
   // Add other fields as needed
 }
 
@@ -24,6 +25,11 @@ const transactionSchema = new Schema<Transaction>({
       // ...
     },
   ],
+  partyId: {
+    type: Schema.Types.ObjectId,
+    ref: "Party", // Replace "Party" with the actual model name for the party
+    required: false, // Make the party ID optional
+  },
   // Add other transaction properties as needed
   // ...
   totalPrice: {
