@@ -68,7 +68,7 @@ const PartyDetailsPage = async ({ params }: Props) => {
             type="submit"
             className="mt-4 bg-red-500 text-white py-2 px-4 rounded shadow hover:bg-red-600 w-full lg:w-auto"
           >
-            Delete Product
+            Delete
           </button>
         </form>
 
