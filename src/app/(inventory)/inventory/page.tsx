@@ -6,8 +6,6 @@ const getAllProducts = async (page = 1, limit = 10) => {
   await connectDB();
 
   try {
-   
-
     const products = await ProductModel.find()
       .skip((page - 1) * limit)
       .limit(limit)
@@ -79,14 +77,20 @@ export default async function ProductsPage({ searchParams }: Props) {
         {/* Pagination */}
         <div className="flex justify-between mt-4">
           {currentPage > 1 && (
-            <Link href={`/products?page=${currentPage - 1}&limit=10`}>
-              <a className="text-blue-500 hover:underline">Previous</a>
+            <Link
+              className="text-blue-500 hover:underline"
+              href={`/products?page=${currentPage - 1}&limit=10`}
+            >
+              Previous
             </Link>
           )}
 
           {currentPage < totalPages && (
-            <Link href={`/products?page=${currentPage + 1}&limit=10`}>
-              <a className="text-blue-500 hover:underline">Next</a>
+            <Link
+              className="text-blue-500 hover:underline"
+              href={`/products?page=${currentPage + 1}&limit=10`}
+            >
+              Next
             </Link>
           )}
         </div>

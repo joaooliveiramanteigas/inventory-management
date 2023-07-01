@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className={inter.className}>
         {/* Navigation */}
         <nav className="bg-gray-800 text-white p-3 md:p-5 fixed z-50 md:w-64 md:h-full hidden md:block">
-          <ul className="flex justify-around md:flex-col md:space-y-2">
+          <ul className="flex justify-around md:flex-col md:space-y-3 text-lg">
             <li>
               <Link href="/">Home</Link>
             </li>

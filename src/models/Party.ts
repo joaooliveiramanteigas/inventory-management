@@ -2,7 +2,7 @@ import mongoose, { Document, Model, Schema } from "mongoose";
 
 delete mongoose.models.Party;
 
-interface IParty extends Document {
+export interface IParty extends Document {
   name: string;
   description: string;
   month: string;
