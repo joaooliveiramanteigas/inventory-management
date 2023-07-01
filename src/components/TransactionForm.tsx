@@ -5,6 +5,10 @@ import { useRouter } from "next/navigation";
 
 type Props = {
   products: Product[];
+  partyOptions: {
+    value: string;
+    label: string;
+  }[];
 };
 
 function reduceCategories(products: Product[]): string[] {
@@ -19,7 +23,7 @@ function reduceCategories(products: Product[]): string[] {
   return categories;
 }
 
-export default function TransactionForm({ products }: Props) {
+export default function TransactionForm({ products, partyOptions }: Props) {
   const router = useRouter();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState<number>(0);
@@ -173,24 +177,43 @@ export default function TransactionForm({ products }: Props) {
       <div className="flex-grow p-8">
         <h1 className="text-2xl font-bold mb-4">New Transaction</h1>
 
-        <div className="flex items-center mb-4">
-          <label htmlFor="category" className="mr-2">
-            Category:
-          </label>
-          <select
-            id="category"
-            onChange={handleCategoryChange}
-            className="border border-gray-300 rounded-md px-2 py-1"
-          >
-            <option value="">All</option>
-            {categories.map((cat) => {
-              return (
-                <option key={cat} value={cat}>
-                  {cat}
+        <div className="flex flex-col md:flex-row md:justify-between mb-4">
+          <div className="flex items-center mb-2 md:mb-0">
+            <label htmlFor="category" className="mr-2 text-center w-full">
+              Category
+            </label>
+            <select
+              id="category"
+              onChange={handleCategoryChange}
+              className="border border-gray-300 rounded-md px-2 py-1 w-full"
+            >
+              <option value="">All</option>
+              {categories.map((cat) => {
+                return (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="flex items-center mb-2 md:mb-0 md:ml-4">
+            <label htmlFor="partyName" className="mr-2 text-center w-full">
+              Party
+            </label>
+            <select
+              id="partyName"
+              // onChange={handlePartyNameChange}
+              className="border border-gray-300 rounded-md px-2 py-1 w-full"
+            >
+              <option value="">All</option>
+              {partyOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
                 </option>
-              );
-            })}
-          </select>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 product-list">

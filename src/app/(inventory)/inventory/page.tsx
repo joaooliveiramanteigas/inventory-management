@@ -41,7 +41,7 @@ export default async function ProductsPage({ searchParams }: Props) {
   return (
     <div className="flex flex-col md:flex-row">
       {/* Main Content */}
-      <div className="w-full p-8 md:w-3/4 ">
+      <div className="w-full p-4 md:p-8 md:w-3/4 ">
         <h1 className="text-2xl font-bold mb-4 text-center md:text-left">
           Products
         </h1>

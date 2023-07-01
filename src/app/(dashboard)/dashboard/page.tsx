@@ -66,7 +66,7 @@ export default async function DashboardPage({ searchParams }: Props) {
   return (
     <div className="flex flex-col">
       {/* Main Content */}
-      <div className="w-full p-8 md:w-3/4">
+      <div className="w-full p-4 md:p-8 md:w-3/4">
         <h1 className="text-2xl font-bold mb-4 text-center md:text-left">
           Dashboard
         </h1>

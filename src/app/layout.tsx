@@ -45,7 +45,7 @@ export default function RootLayout({
         </nav>
 
         {/* Main Content */}
-        <main className="md:ml-64 p-3">
+        <main className="md:ml-64 p-3 md:mb-0 mb-10">
           <div className=" w-full md:mt-0 mt-10">{children}</div>
         </main>
 

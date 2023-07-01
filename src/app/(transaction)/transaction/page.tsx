@@ -92,7 +92,7 @@ export default async function TransactionsPage({ searchParams }: Props) {
   return (
     <div className="flex">
       {/* Main Content */}
-      <div className="md:w-3/4  p-8">
+      <div className="md:w-3/4 p-4 md:p-8">
         <h1 className="text-2xl font-bold mb-4 text-center">Transactions</h1>
 
         {/* Transaction List */}

@@ -3,7 +3,7 @@ import { passwordChecker } from "../actions";
 export default async function CreateProduct() {
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="w-full sm:w-3/4 lg:w-1/2 xl:w-1/3 bg-white shadow p-8 rounded">
+      <div className="w-full sm:w-3/4 lg:w-1/2 xl:w-1/3 bg-white shadow p-4 md:p-8 rounded">
         <h1 className="text-2xl font-bold mb-4 text-center">
           Welcome to <br />
           Sweet Delight

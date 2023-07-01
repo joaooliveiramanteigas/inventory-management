@@ -1,8 +1,9 @@
 import TransactionForm from "@/components/TransactionForm";
 import { connectDB } from "@/db";
-import ProductModel, { IProduct } from "@/models/Product";
+import PartyModel, { IParty } from "@/models/Party";
+import ProductModel from "@/models/Product";
 import { Product } from "@/types";
-import { headers } from "next/headers";
+// import { headers } from "next/headers";
 
 const getProducts = async () => {
   await connectDB();
@@ -25,6 +26,33 @@ const getProducts = async () => {
   }
 };
 
+const getParties = async (): Promise<IParty[]> => {
+  await connectDB();
+
+  const currentDate = new Date();
+  const currentMonthDate = currentDate.toISOString().slice(5, 10); // Extract month and date (MM-DD) from ISO string
+
+  const parties = await PartyModel.find(
+    {
+      $expr: {
+        $and: [
+          {
+            $lte: [{ $substr: ["$period.startDate", 5, 5] }, currentMonthDate],
+          }, // Compare only month and date
+          {
+            $gte: [{ $substr: ["$period.endDate", 5, 5] }, currentMonthDate],
+          }, // Compare only month and date
+        ],
+      },
+    },
+    { _id: 1, name: 1 }
+  )
+    .lean()
+    .exec();
+
+  return parties;
+};
+
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
@@ -35,6 +63,13 @@ type Props = {
 export default async function CreateProduct({ searchParams }: Props) {
   const products = await getProducts();
 
-  headers();
-  return <TransactionForm products={products} />;
+  const parties = await getParties();
+
+  const partyOptions = parties.map((party) => ({
+    value: String(party._id.toString()),
+    label: party.name,
+  }));
+
+  // headers();
+  return <TransactionForm products={products} partyOptions={partyOptions} />;
 }

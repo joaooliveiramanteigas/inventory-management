@@ -44,7 +44,7 @@ export default async function Product({ params }: Props) {
   return (
     <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-start">
       {/* Main Content */}
-      <div className="w-full lg:w-3/4 p-8 mx-auto lg:mx-0">
+      <div className="w-full lg:w-3/4 p-4 md:p-8 mx-auto lg:mx-0">
         <h1 className="text-2xl font-bold mb-4 text-center lg:text-left">
           Product Details
         </h1>

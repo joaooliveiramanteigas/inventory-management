@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div className="flex flex-col md:flex-row">
       {/* Main Content */}
-      <div className="w-full md:w-3/4 p-8">
+      <div className="w-full md:w-3/4 p-4 md:8">
         <h1 className="text-2xl font-bold mb-4 text-center md:text-left">
           Home
         </h1>
