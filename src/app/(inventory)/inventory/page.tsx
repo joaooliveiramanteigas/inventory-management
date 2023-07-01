@@ -77,3 +77,6 @@ export default async function ProductsPage({ searchParams }: Props) {
     </div>
   );
 }
+export const metadata = {
+  title: "Inventory",
+};

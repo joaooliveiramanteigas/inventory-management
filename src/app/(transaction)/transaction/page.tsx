@@ -146,3 +146,7 @@ export default async function TransactionsPage({ searchParams }: Props) {
     </div>
   );
 }
+
+export const metadata = {
+  title: "Transactions",
+};

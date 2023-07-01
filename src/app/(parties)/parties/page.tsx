@@ -79,3 +79,7 @@ export default async function PartiesPage({ searchParams }: Props) {
     </div>
   );
 }
+
+export const metadata = {
+  title: "Parties",
+};

@@ -29,3 +29,7 @@ export default async function CreateProduct({ searchParams }: Props) {
     />
   );
 }
+
+export const metadata = {
+  title: "New Transaction",
+};

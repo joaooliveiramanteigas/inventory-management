@@ -62,3 +62,7 @@ const PartyDetailsPage = async ({ params }: Props) => {
 };
 
 export default PartyDetailsPage;
+
+export const metadata = {
+  title: "Party",
+};

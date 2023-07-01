@@ -25,7 +25,7 @@ export default async function DashboardPage({ searchParams }: Props) {
         </h1>
 
         {/* KPIs */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
           <div className="p-4 bg-white shadow rounded">
             <h3 className="text-lg font-semibold">Total Transactions</h3>
             <Suspense fallback={<p>Loading</p>}>
@@ -97,3 +97,7 @@ async function TotalRevenue() {
 
   return <p className="text-gray-500">{totalRevenue} EUR</p>;
 }
+
+export const metadata = {
+  title: "Dashboard",
+};

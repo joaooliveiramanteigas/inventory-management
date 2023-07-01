@@ -11,8 +11,32 @@ import {
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Sweet Delight",
-  description: "Best sweet vending service",
+  title: "Sweet Delights",
+  generator: "Next.js",
+  description:
+    "Welcome to Sweet Delights! We are a candy mobile vending service based in Porto, Portugal. Our mission is to bring joy and sweetness to your events and celebrations. Whether it is a birthday party, wedding, or corporate gathering, our wide selection of delicious candies will satisfy your sweet tooth. Contact us today to book our mobile candy cart and indulge in a delightful candy experience!",
+  applicationName: "Sweet Delights",
+  referrer: "origin-when-cross-origin",
+  keywords: [
+    "candy",
+    "doces",
+    "algodao doce",
+    "pipocas",
+    "pop corn",
+    "festas populares",
+    "festas",
+    "matosinhos",
+    "gaia",
+    "mobile vending",
+    "Next.js",
+    "React",
+    "JavaScript",
+    "Portugal",
+    "Porto",
+  ],
+  authors: [{ name: "João", url: "https://github.com/joaooliveiramanteigas" }],
+  creator: "João Manteigas",
+  publisher: "João Manteigas",
 };
 
 export default function RootLayout({

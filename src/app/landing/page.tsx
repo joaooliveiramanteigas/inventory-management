@@ -38,3 +38,7 @@ export default async function CreateProduct() {
     </div>
   );
 }
+
+export const metadata = {
+  title: "Sweet Delights - Landing",
+};
